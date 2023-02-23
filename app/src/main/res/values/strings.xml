@@ -6,4 +6,7 @@
 
     <string name="turn_on_location_toast">Turn on location</string>
     <string name="permission_denied_toast">You should give permission to the app</string>
+
+    <string name="menu_get_my_location">Get my location</string>
+    <string name="menu_get_location_from_map">Get location from map</string>
 </resources>

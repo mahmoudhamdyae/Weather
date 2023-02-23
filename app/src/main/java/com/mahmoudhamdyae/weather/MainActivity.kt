@@ -96,7 +96,11 @@ class MainActivity : ComponentActivity() {
 
     @Composable
     fun ErrorMessage(error: String, modifier: Modifier = Modifier) {
-        Column(verticalArrangement = Arrangement.Center, modifier = modifier) {
+        Column(
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = modifier.fillMaxSize()
+        ) {
             Text(
                 text = error,
                 color = Color.Red,
@@ -120,10 +124,11 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    private fun isPermissionGranted() : Boolean {
+    private fun isPermissionGranted(): Boolean {
         return ContextCompat.checkSelfPermission(
             applicationContext,
-            Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+            Manifest.permission.ACCESS_FINE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED
     }
 
     private fun grantPermission() {
@@ -131,7 +136,8 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun isGpsEnabled(): Boolean {
-        val locationManager = application.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        val locationManager =
+            application.getSystemService(Context.LOCATION_SERVICE) as LocationManager
         return locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER) ||
                 locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
     }
