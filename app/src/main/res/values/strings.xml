@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Weather</string>
+
+    <string name="button_text_permission">Grant Location Permission</string>
+    <string name="button_text_gps">Enable GPS</string>
+
+    <string name="turn_on_location_toast">Turn on location</string>
+    <string name="permission_denied_toast">You should give permission to the app</string>
 </resources>
