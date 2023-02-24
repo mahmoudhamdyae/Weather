@@ -1,4 +1,4 @@
-package com.mahmoudhamdyae.weather.ui
+package com.mahmoudhamdyae.weather.ui.viewmodels
 
 import com.mahmoudhamdyae.weather.domain.weather.WeatherInfo
 

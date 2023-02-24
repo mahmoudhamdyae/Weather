@@ -1,4 +1,4 @@
-package com.mahmoudhamdyae.weather.ui
+package com.mahmoudhamdyae.weather.ui.viewmodels
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf

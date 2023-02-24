@@ -1,4 +1,4 @@
-package com.mahmoudhamdyae.weather
+package com.mahmoudhamdyae.weather.ui
 
 import android.Manifest
 import android.content.Context
@@ -14,26 +14,14 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
+import androidx.compose.material.*
+import androidx.compose.runtime.*
 import androidx.core.content.ContextCompat
 import com.google.android.gms.location.*
-import com.mahmoudhamdyae.weather.ui.WeatherCard
-import com.mahmoudhamdyae.weather.ui.WeatherForecast
-import com.mahmoudhamdyae.weather.ui.WeatherViewModel
-import com.mahmoudhamdyae.weather.ui.theme.DarkBlue
-import com.mahmoudhamdyae.weather.ui.theme.DeepBlue
+import com.mahmoudhamdyae.weather.R
 import com.mahmoudhamdyae.weather.ui.theme.WeatherTheme
+import com.mahmoudhamdyae.weather.ui.viewmodels.WeatherViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 
@@ -66,60 +54,17 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             WeatherTheme {
-                Box(
-                    modifier = Modifier.fillMaxSize()
-                ) {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .background(DarkBlue)
-                    ) {
-                        WeatherCard(
-                            state = viewModel.state,
-                            backgroundColor = DeepBlue
-                        )
-                        Spacer(modifier = Modifier.height(16.dp))
-                        WeatherForecast(state = viewModel.state)
-                    }
-                    if (viewModel.state.isLoading) {
-                        CircularProgressIndicator(
-                            modifier = Modifier.align(Alignment.Center)
-                        )
-                    }
-                    viewModel.state.error?.let { error ->
-                        ErrorMessage(error)
-                    }
-                }
-            }
-        }
-    }
-
-    @Composable
-    fun ErrorMessage(error: String, modifier: Modifier = Modifier) {
-        Column(
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = modifier.fillMaxSize()
-        ) {
-            Text(
-                text = error,
-                color = Color.Red,
-                textAlign = TextAlign.Center
-            )
-            Button(onClick = {
-                if (!isPermissionGranted()) {
-                    grantPermission()
-                } else if (!isGpsEnabled()) {
-                    getLastLocation()
-                }
-            }) {
-                if (!isPermissionGranted()) {
-                    Text(text = stringResource(id = R.string.button_text_permission))
-                } else if (!isGpsEnabled()) {
-                    Text(text = stringResource(id = R.string.button_text_gps))
-                } else {
-                    getLastLocation()
-                }
+                WeatherScreen(
+                    onMenuGetMyLocationItemClickListener = {
+                        getLastLocation() },
+                    onMenuNavigateToMapItemClickListener = {
+                        Toast.makeText(this,
+                            "In development", Toast.LENGTH_SHORT).show() },
+                    isPermissionGranted = isPermissionGranted(),
+                    grantPermission = { grantPermission() },
+                    isGpsEnabled = isGpsEnabled(),
+                    getLastLocation = { getLastLocation() }
+                )
             }
         }
     }
