@@ -1,9 +1,10 @@
 # Weather App
-* It is a simple app that shows you the weather in your location.
+* It is a simple app that shows you the weather in your location or chosen location.
 
 ## Screenshots
 <p align="center">
   <img src="Screenshots/1.jpg" height="450" width="220">
+  <img src="Screenshots/2.jpg" height="450" width="220">
 </p>
 
 ## Downloads
