@@ -36,11 +36,11 @@ fun MainScreen(
                 .background(DarkBlue)
         ) {
             WeatherCard(
-                weatherInfo = uiState.weatherInfo,
+                uiState = uiState,
                 backgroundColor = DeepBlue
             )
             Spacer(modifier = Modifier.height(16.dp))
-            WeatherForecast(weatherInfo = uiState.weatherInfo)
+            WeatherForecast(uiState = uiState)
         }
         if (uiState.isLoading) {
             CircularProgressIndicator(

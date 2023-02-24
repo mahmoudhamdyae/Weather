@@ -14,14 +14,14 @@ class LocationPreferencesRepository(
     private val dataStore: DataStore<Preferences>
 ) {
 
-    val readLatitude: Flow<Double> = dataStore.data
+    val readLatitude: Flow<Double?> = dataStore.data
         .map { preferences ->
-            preferences[LATITUDE_KEY] ?: 0.0
+            preferences[LATITUDE_KEY]
         }
 
-    val readLongitude: Flow<Double> = dataStore.data
+    val readLongitude: Flow<Double?> = dataStore.data
         .map { preferences ->
-            preferences[LONGITUDE_KEY] ?: 0.0
+            preferences[LONGITUDE_KEY]
         }
 
     suspend fun saveLocation(latitude: Double, longitude: Double) {

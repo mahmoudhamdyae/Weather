@@ -8,6 +8,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -109,7 +110,7 @@ fun WeatherScreen(
             )
         }
     ) { innerPadding ->
-        val uiState by viewModel.uiState.collectAsState()
+        val uiState = viewModel.state
         NavHost(
             navController = navController,
             startDestination = WeatherScreen.Start.name,
@@ -125,7 +126,10 @@ fun WeatherScreen(
                 )
             }
             composable(route = WeatherScreen.MAPS.name) {
-                MapsScreen()
+                MapsScreen(
+                    context = LocalContext.current,
+                    viewModel = viewModel
+                )
             }
         }
     }

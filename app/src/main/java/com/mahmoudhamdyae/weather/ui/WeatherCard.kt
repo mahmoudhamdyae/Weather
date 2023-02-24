@@ -16,17 +16,17 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mahmoudhamdyae.weather.R
-import com.mahmoudhamdyae.weather.domain.weather.WeatherInfo
+import com.mahmoudhamdyae.weather.data.WeatherUiState
 import java.time.format.DateTimeFormatter
 import kotlin.math.roundToInt
 
 @Composable
 fun WeatherCard(
-    weatherInfo: WeatherInfo?,
+    uiState: WeatherUiState,
     backgroundColor: Color,
     modifier: Modifier = Modifier
 ) {
-    weatherInfo?.currentWeatherData?.let { data ->
+    uiState.weatherInfo?.currentWeatherData?.let { data ->
         Card(
             backgroundColor = backgroundColor,
             shape = RoundedCornerShape(10.dp),

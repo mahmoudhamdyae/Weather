@@ -49,7 +49,7 @@ class MainActivity : ComponentActivity() {
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
 
-        viewModel.readLocationFromPreferences()
+        viewModel.readLocationFromPreferencesAndLoad()
 
         setContent {
             WeatherTheme {
@@ -100,30 +100,35 @@ class MainActivity : ComponentActivity() {
 
     private val mLocationCallback = object : LocationCallback() {
         override fun onLocationResult(locationResult: LocationResult) {
-            val mLastLocation: Location? = locationResult.lastLocation
-            viewModel.writeLocationAndLoad(mLastLocation?.latitude, mLastLocation?.longitude)
+            val mLastLocation: Location = locationResult.lastLocation!!
+            viewModel.writeLocationAndLoad(mLastLocation.latitude, mLastLocation.longitude)
+            Toast.makeText(applicationContext, mLastLocation.latitude.toString(), Toast.LENGTH_SHORT).show()
         }
     }
 
     private fun getLastLocation() {
-        if (isGpsEnabled()) {
-            fusedLocationProviderClient.lastLocation.addOnCompleteListener(this) { task ->
-                val location: Location? = task.result
-                if (location == null) {
-                    requestNewLocationData()
-                } else {
-                    viewModel.writeLocationAndLoad(location.latitude, location.longitude)
+        if (isPermissionGranted()) {
+            if (isGpsEnabled()) {
+                fusedLocationProviderClient.lastLocation.addOnCompleteListener(this) { task ->
+                    val location: Location? = task.result
+                    if (location == null) {
+                        requestNewLocationData()
+                    } else {
+                        viewModel.writeLocationAndLoad(location.latitude, location.longitude)
+                    }
                 }
+            } else {
+                Toast.makeText(this, R.string.turn_on_location_toast, Toast.LENGTH_LONG).show()
+                val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                startActivity(intent)
             }
         } else {
-            Toast.makeText(this, R.string.turn_on_location_toast, Toast.LENGTH_LONG).show()
-            val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
-            startActivity(intent)
+            grantPermission()
         }
     }
 
     override fun onResume() {
         super.onResume()
-        viewModel.readLocationFromPreferences()
+        viewModel.readLocationFromPreferencesAndLoad()
     }
 }
