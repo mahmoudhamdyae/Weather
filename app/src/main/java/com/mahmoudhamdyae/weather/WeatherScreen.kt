@@ -48,21 +48,30 @@ fun WeatherAppBar(
             }
         },
         actions = {
-            IconButton(onClick = { showMenu = !showMenu }) {
-                Icon(
-                    imageVector = Icons.Filled.MoreVert,
-                    contentDescription = "More",
-                )
-            }
-            DropdownMenu(
-                expanded = showMenu,
-                onDismissRequest = { showMenu = false }
-            ) {
-                DropdownMenuItem(onClick = onMenuGetMyLocationItemClickListener) {
-                    Text(stringResource(id = R.string.menu_get_my_location))
+            if (!canNavigateBack) {
+                IconButton(onClick = { showMenu = !showMenu }) {
+                    Icon(
+                        imageVector = Icons.Filled.MoreVert,
+                        contentDescription = "More",
+                    )
                 }
-                DropdownMenuItem(onClick = onMenuNavigateToMapItemClickListener) {
-                    Text(stringResource(id = R.string.menu_get_location_from_map))
+                DropdownMenu(
+                    expanded = showMenu,
+                    onDismissRequest = { showMenu = false }
+                ) {
+                    DropdownMenuItem(onClick = {
+                        onMenuGetMyLocationItemClickListener()
+                        showMenu = false
+                    }) {
+                        Text(stringResource(id = R.string.menu_get_my_location))
+                    }
+                    // On the main screen
+                    DropdownMenuItem(onClick = {
+                        onMenuNavigateToMapItemClickListener()
+                        showMenu = false
+                    }) {
+                        Text(stringResource(id = R.string.menu_get_location_from_map))
+                    }
                 }
             }
         }
@@ -71,7 +80,6 @@ fun WeatherAppBar(
 
 @Composable
 fun WeatherScreen(
-    onMenuGetMyLocationItemClickListener: () -> Unit,
     isPermissionGranted: Boolean,
     grantPermission: () -> Unit,
     isGpsEnabled: Boolean,
@@ -94,7 +102,7 @@ fun WeatherScreen(
                 currentScreen = currentScreen,
                 canNavigateBack = navController.previousBackStackEntry != null,
                 navigateUp = { navController.navigateUp() },
-                onMenuGetMyLocationItemClickListener = { onMenuGetMyLocationItemClickListener() },
+                onMenuGetMyLocationItemClickListener = { getLastLocation() },
                 onMenuNavigateToMapItemClickListener = {
                     navController.navigate(WeatherScreen.MAPS.name)
                 }
@@ -117,8 +125,7 @@ fun WeatherScreen(
                 )
             }
             composable(route = WeatherScreen.MAPS.name) {
-                MapsScreen(
-                )
+                MapsScreen()
             }
         }
     }

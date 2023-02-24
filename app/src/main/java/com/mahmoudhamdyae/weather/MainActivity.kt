@@ -54,7 +54,6 @@ class MainActivity : ComponentActivity() {
         setContent {
             WeatherTheme {
                 WeatherScreen(
-                    onMenuGetMyLocationItemClickListener = { getLastLocation() },
                     isPermissionGranted = isPermissionGranted(),
                     grantPermission = { grantPermission() },
                     isGpsEnabled = isGpsEnabled(),
