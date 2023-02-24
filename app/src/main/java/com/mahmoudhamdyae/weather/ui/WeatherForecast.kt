@@ -9,14 +9,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.mahmoudhamdyae.weather.ui.viewmodels.WeatherState
+import com.mahmoudhamdyae.weather.domain.weather.WeatherInfo
 
 @Composable
 fun WeatherForecast(
-    state: WeatherState,
+    weatherInfo: WeatherInfo?,
     modifier: Modifier = Modifier
 ) {
-    state.weatherInfo?.weatherDataPerDay?.get(0)?.let { data ->
+    weatherInfo?.weatherDataPerDay?.get(0)?.let { data ->
         Column(
             modifier = modifier
                 .fillMaxWidth()

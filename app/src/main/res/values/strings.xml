@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Weather</string>
+    <string name="maps_title">Maps</string>
+    <string name="back_button">Back</string>
 
     <string name="button_text_permission">Grant Location Permission</string>
     <string name="button_text_gps">Enable GPS</string>

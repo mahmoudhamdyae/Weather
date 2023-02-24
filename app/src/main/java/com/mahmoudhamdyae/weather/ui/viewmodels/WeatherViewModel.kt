@@ -1,16 +1,18 @@
 package com.mahmoudhamdyae.weather.ui.viewmodels
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mahmoudhamdyae.weather.data.WeatherUiState
 import com.mahmoudhamdyae.weather.data.repository.LocationPreferencesRepository
 import com.mahmoudhamdyae.weather.domain.repository.WeatherRepository
 import com.mahmoudhamdyae.weather.domain.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -20,29 +22,38 @@ class WeatherViewModel @Inject constructor(
     private val dataStore: DataStore<Preferences>
 ): ViewModel() {
 
-    var state by mutableStateOf(WeatherState())
-        private set
+//    var _uiState by mutableStateOf(WeatherUiState())
+//        private set
+
+    private val _uiState = MutableStateFlow(WeatherUiState())
+    val uiState: StateFlow<WeatherUiState> = _uiState.asStateFlow()
 
     private fun loadWeatherInfo(latitude: Double, longitude: Double) {
         viewModelScope.launch {
-            state = state.copy(
-                isLoading = true,
-                error = null
-            )
+            _uiState.update { currentState ->
+                currentState.copy(
+                    isLoading = true,
+                    error = null
+                )
+            }
             when (val result = repository.getWeatherData(latitude, longitude)) {
                 is Resource.Success -> {
-                    state = state.copy(
-                        weatherInfo = result.data,
-                        isLoading = false,
-                        error = null
-                    )
+                    _uiState.update { currentState ->
+                        currentState.copy(
+                            weatherInfo = result.data,
+                            isLoading = false,
+                            error = null
+                        )
+                    }
                 }
                 is Resource.Error -> {
-                    state = state.copy(
-                        weatherInfo = null,
-                        isLoading = false,
-                        error = result.message
-                    )
+                    _uiState.update { currentState ->
+                        currentState.copy(
+                            weatherInfo = null,
+                            isLoading = false,
+                            error = result.message
+                        )
+                    }
                 }
             }
         }
@@ -63,20 +74,24 @@ class WeatherViewModel @Inject constructor(
         val latitudeFlow = LocationPreferencesRepository(dataStore).readLatitude
         val longitudeFlow = LocationPreferencesRepository(dataStore).readLongitude
         viewModelScope.launch {
-            state = state.copy(
-                isLoading = true,
-                error = null
-            )
+            _uiState.update { currentState ->
+                currentState.copy(
+                    isLoading = true,
+                    error = null
+                )
+            }
             latitudeFlow.collect { latitude ->
                 longitudeFlow.collect { longitude ->
                     if (latitude != 0.0 && longitude != 0.0) {
                         loadWeatherInfo(latitude, longitude)
                     } else {
-                        state = state.copy(
-                            isLoading = false,
-                            error =
-                            "Couldn't retrieve location. Make sure to grant permission and enable GPS",
-                        )
+                        _uiState.update { currentState ->
+                            currentState.copy(
+                                isLoading = false,
+                                error =
+                                "Couldn't retrieve location. Make sure to grant permission and enable GPS",
+                            )
+                        }
                     }
                 }
             }
