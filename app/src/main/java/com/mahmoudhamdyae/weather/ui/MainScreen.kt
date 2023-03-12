@@ -2,6 +2,8 @@ package com.mahmoudhamdyae.weather.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
@@ -13,9 +15,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.mahmoudhamdyae.weather.R
-import com.mahmoudhamdyae.weather.data.WeatherUiState
 import com.mahmoudhamdyae.weather.ui.theme.DarkBlue
 import com.mahmoudhamdyae.weather.ui.theme.DeepBlue
+import com.mahmoudhamdyae.weather.ui.viewmodels.WeatherUiState
 
 @Composable
 fun MainScreen(
@@ -29,11 +31,12 @@ fun MainScreen(
     Box(
         modifier = modifier
             .fillMaxSize()
+            .verticalScroll(rememberScrollState())
+            .background(DarkBlue)
     ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(DarkBlue)
         ) {
             WeatherCard(
                 uiState = uiState,

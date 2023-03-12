@@ -128,7 +128,8 @@ fun WeatherScreen(
             composable(route = WeatherScreen.MAPS.name) {
                 MapsScreen(
                     context = LocalContext.current,
-                    viewModel = viewModel
+                    uiState = uiState,
+                    onMapClicked = viewModel::writeLocationToPreferences
                 )
             }
         }

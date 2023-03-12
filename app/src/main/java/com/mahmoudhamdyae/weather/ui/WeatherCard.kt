@@ -16,7 +16,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mahmoudhamdyae.weather.R
-import com.mahmoudhamdyae.weather.data.WeatherUiState
+import com.mahmoudhamdyae.weather.ui.viewmodels.WeatherUiState
 import java.time.format.DateTimeFormatter
 import kotlin.math.roundToInt
 

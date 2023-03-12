@@ -49,8 +49,6 @@ class MainActivity : ComponentActivity() {
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
 
-        viewModel.readLocationFromPreferencesAndLoad()
-
         setContent {
             WeatherTheme {
                 WeatherScreen(
@@ -101,7 +99,7 @@ class MainActivity : ComponentActivity() {
     private val mLocationCallback = object : LocationCallback() {
         override fun onLocationResult(locationResult: LocationResult) {
             val mLastLocation: Location = locationResult.lastLocation!!
-            viewModel.writeLocationAndLoad(mLastLocation.latitude, mLastLocation.longitude)
+            viewModel.writeLocationToPreferences(mLastLocation.latitude, mLastLocation.longitude)
             Toast.makeText(applicationContext, mLastLocation.latitude.toString(), Toast.LENGTH_SHORT).show()
         }
     }
@@ -114,7 +112,7 @@ class MainActivity : ComponentActivity() {
                     if (location == null) {
                         requestNewLocationData()
                     } else {
-                        viewModel.writeLocationAndLoad(location.latitude, location.longitude)
+                        viewModel.writeLocationToPreferences(location.latitude, location.longitude)
                     }
                 }
             } else {
@@ -129,6 +127,6 @@ class MainActivity : ComponentActivity() {
 
     override fun onResume() {
         super.onResume()
-        viewModel.readLocationFromPreferencesAndLoad()
+        viewModel.loadWeatherInfo()
     }
 }

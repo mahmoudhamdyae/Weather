@@ -9,7 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.mahmoudhamdyae.weather.data.WeatherUiState
+import com.mahmoudhamdyae.weather.ui.viewmodels.WeatherUiState
 
 @Composable
 fun WeatherForecast(

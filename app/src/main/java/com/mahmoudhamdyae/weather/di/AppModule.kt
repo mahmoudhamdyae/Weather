@@ -12,6 +12,7 @@ import androidx.datastore.preferences.preferencesDataStoreFile
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.mahmoudhamdyae.weather.data.remote.WeatherApi
+import com.mahmoudhamdyae.weather.data.repository.LocationPreferencesRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -49,7 +50,8 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun providePreferencesDataStore(@ApplicationContext appContext: Context): DataStore<Preferences> {
+    fun providePreferencesDataStore(@ApplicationContext appContext: Context)
+    : DataStore<Preferences> {
         return PreferenceDataStoreFactory.create(
             corruptionHandler = ReplaceFileCorruptionHandler(
                 produceNewData = { emptyPreferences() }
@@ -58,5 +60,12 @@ object AppModule {
             scope = CoroutineScope(Dispatchers.IO + SupervisorJob()),
             produceFile = { appContext.preferencesDataStoreFile(LOCATION_PREFERENCES_NAME) }
         )
+    }
+
+    @Singleton
+    @Provides
+    fun provideLocationPreferencesRepository(dataStore: DataStore<Preferences>)
+    : LocationPreferencesRepository {
+        return LocationPreferencesRepository(dataStore)
     }
 }
