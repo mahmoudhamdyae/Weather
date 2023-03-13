@@ -18,7 +18,7 @@ class WeatherViewModel @Inject constructor(
     private val preferences: LocationPreferencesRepository
 ): ViewModel() {
 
-    var state by mutableStateOf(WeatherUiState())
+    var uiState by mutableStateOf(WeatherUiState())
         private set
 
     fun loadWeatherInfo() {
@@ -28,21 +28,21 @@ class WeatherViewModel @Inject constructor(
                 preferences.readLongitude.collect { longitude ->
 
                     if (latitude != null && longitude != null) {
-                        state = state.copy(
+                        uiState = uiState.copy(
                             isLoading = true,
                             error = null
                         )
                         when (val result = repository
                             .getWeatherData(latitude, longitude)) {
                             is Resource.Success -> {
-                                state = state.copy(
+                                uiState = uiState.copy(
                                     weatherInfo = result.data,
                                     isLoading = false,
                                     error = null
                                 )
                             }
                             is Resource.Error -> {
-                                state = state.copy(
+                                uiState = uiState.copy(
                                     weatherInfo = null,
                                     isLoading = false,
                                     error = result.message
@@ -58,7 +58,7 @@ class WeatherViewModel @Inject constructor(
     fun writeLocationToPreferences(latitude: Double, longitude: Double) {
         viewModelScope.launch {
             preferences.saveLocationPreference(latitude, longitude)
-            state = state.copy(latitude = latitude, longitude = longitude)
+            uiState = uiState.copy(latitude = latitude, longitude = longitude)
 
             loadWeatherInfo()
         }

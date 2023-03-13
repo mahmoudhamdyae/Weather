@@ -110,7 +110,7 @@ fun WeatherScreen(
             )
         }
     ) { innerPadding ->
-        val uiState = viewModel.state
+        val uiState = viewModel.uiState
         NavHost(
             navController = navController,
             startDestination = WeatherScreen.Start.name,
