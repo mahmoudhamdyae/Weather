@@ -100,7 +100,6 @@ class MainActivity : ComponentActivity() {
         override fun onLocationResult(locationResult: LocationResult) {
             val mLastLocation: Location = locationResult.lastLocation!!
             viewModel.writeLocationToPreferences(mLastLocation.latitude, mLastLocation.longitude)
-            Toast.makeText(applicationContext, mLastLocation.latitude.toString(), Toast.LENGTH_SHORT).show()
         }
     }
 

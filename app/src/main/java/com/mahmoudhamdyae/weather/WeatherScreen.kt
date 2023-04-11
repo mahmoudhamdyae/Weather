@@ -15,6 +15,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.rememberNavController
 import com.mahmoudhamdyae.weather.ui.MainScreen
 import com.mahmoudhamdyae.weather.ui.MapsScreen
@@ -110,7 +111,7 @@ fun WeatherScreen(
             )
         }
     ) { innerPadding ->
-        val uiState = viewModel.uiState
+        val uiState by viewModel.uiState.collectAsStateWithLifecycle()
         NavHost(
             navController = navController,
             startDestination = WeatherScreen.Start.name,
