@@ -1,10 +1,10 @@
 package com.mahmoudhamdyae.weather.ui
 
-import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.GoogleMap
@@ -15,11 +15,12 @@ import com.mahmoudhamdyae.weather.ui.viewmodels.WeatherUiState
 
 @Composable
 fun MapsScreen(
-    context: Context,
     uiState: WeatherUiState,
     onMapClicked: (Double, Double)-> Unit,
     modifier: Modifier = Modifier,
 ) {
+
+    val context = LocalContext.current
     val latitude = uiState.latitude
     val longitude = uiState.longitude
 
